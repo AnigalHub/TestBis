@@ -1,32 +1,46 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <b-row>
+      <b-col cols="2">
+        <navbar-menu/>
+      </b-col>
+      <b-col>
+        <router-view></router-view>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
+<script>
+  import NavbarMenu from "@/components/navbarMenu";
+  export default {
+    components: {NavbarMenu},
+    data(){
+      return {
+
+      }
+    },
+  }
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+  #app{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .row{
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+  }
+  .pages{
+    padding: 1rem 1rem;
+  }
+  @media screen and (max-width: 992px) {
+    .row{
+      flex-direction: column;
+      .col-2,.col{
+        width: 100%;
+      }
     }
   }
-}
 </style>
