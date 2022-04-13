@@ -2,6 +2,7 @@
     <div class="pages">
         <div class="nameTable">Операционные дни</div>
         <b-table :items="opDates" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fields"></b-table>
+        <b-button variant="success">Создать</b-button>
         <div class="nameTable" v-if="selected">Проводки операционного дня</div>
         <b-table v-if="selected" :items="operations" :fields="fieldsOperations"></b-table>
     </div>
@@ -16,6 +17,7 @@
                 operations:null,
                 fields:[
                     { key: "OpDate", label: "Дата операционного дня" },
+                    { key: "Actions", label: "Действия" }
                 ],
                 fieldsOperations:[
                     { key: "AcctNumDB", label: "Счет дебета" },
