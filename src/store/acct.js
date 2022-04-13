@@ -68,7 +68,7 @@ const actions = {
                 arrayCopy.push(context.state.AcctPos[i])
             }
         }
-        return arrayCopy.map(x=>{return {acctNum: x.AcctNum, balance: x.Balance}})
+        return arrayCopy
     },
     filterByDateAndAccount(context,payload){
         let arrayCopy = []
@@ -77,7 +77,15 @@ const actions = {
                 arrayCopy.push(context.state.AcctPos[i])
             }
         }
-        return arrayCopy.map(x=>{return {acctNum: x.AcctNum, balance: x.Balance}})
+        return arrayCopy
+    },
+    addAccount(context,payload){
+        context.state.AcctPos.push(payload)
+    },
+    deleteAccount(context,payload){
+        console.log(payload)
+        let index = context.state.AcctPos.filter(x => x.AcctNum !== payload.AcctNum)
+        context.state.AcctPos = index
     }
 }
 export default {
