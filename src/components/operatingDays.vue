@@ -15,12 +15,12 @@
                 selected: null,
                 operations:null,
                 fields:[
-                    { key: "opDate", label: "Дата операционного дня" },
+                    { key: "OpDate", label: "Дата операционного дня" },
                 ],
                 fieldsOperations:[
-                    { key: "acctNumDB", label: "Счет дебета" },
-                    { key: "acctNumCr", label: "Счет кредита" },
-                    { key: "amount", label: "Сумма" },
+                    { key: "AcctNumDB", label: "Счет дебета" },
+                    { key: "AcctNumCr", label: "Счет кредита" },
+                    { key: "Amount", label: "Сумма" },
                 ],
                 selectMode: 'single',
             }
@@ -36,8 +36,7 @@
         },
         computed:{
             opDates:function () {
-                const opDate = this.$store.getters['opDate/OpDates']
-                return opDate.map(x=>{return {opDate: x.OpDate}})
+                return this.$store.getters['opDate/OpDates']
             },
         },
         watch:{
