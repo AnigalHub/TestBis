@@ -33,13 +33,24 @@
     font-size: 1.25rem;
     font-weight: bold;
     font-family: 'Lora', serif;
+    text-decoration: underline;
   }
   .row{
     margin-right: 0 !important;
     margin-top: 0 !important;
   }
+  select{font-size: 1.25rem;}
+  table{
+    font-size: 1rem;
+    th{
+      border-bottom: 1px solid black !important;
+    }
+  }
   .pages{
     padding: 1.5rem 0;
+  }
+  @media screen and (max-width: 1200px) {
+    select{font-size: 1rem;}
   }
   @media screen and (max-width: 992px) {
     .row{
