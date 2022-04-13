@@ -78,14 +78,14 @@ const actions = {
                 arrayCopy.push(context.state.OpEntry[i])
             }
         }
-        return arrayCopy.map(x=>{return {opDate: x.OpDate, acctNumCr: x.AcctNumCr,acctNumDB:x.AcctNumDB,amount:x.Amount }})
+        return arrayCopy
     },
     filterByDate(context,payload){
         let arrayCopy = []
         for(let i in context.state.OpEntry){
-            arrayCopy = context.state.OpEntry.filter(x=>x.OpDate == payload.opDate)
+            arrayCopy = context.state.OpEntry.filter(x=>x.OpDate == payload.OpDate)
         }
-        return arrayCopy.map(x=>{return { acctNumDB:x.AcctNumDB, acctNumCr: x.AcctNumCr, amount:x.Amount }})
+        return arrayCopy
     }
 }
 export default {
