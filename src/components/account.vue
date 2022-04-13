@@ -1,50 +1,64 @@
 <template>
     <div class="pages">
         <b-select class="" v-model="selected"  :options="opDates" ></b-select>
-        <b-button class="mt-4" variant=" success">Создать</b-button>
         <div class="nameTable">Счета с остатками на дату</div>
         <b-table :items="acctPoss" :select-mode="selectMode" selectable @row-selected="onRowSelected" :fields="fields">
             <template #cell(actions)="{item}">
                 <b-button class="mx-2" variant="primary">Редактировать</b-button>
-                <b-button variant="danger">Удалить</b-button>
+                <b-button variant="danger" @click="onDeleteAcc(item)">Удалить</b-button>
             </template>
         </b-table>
+        <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
         <div class="nameTable" v-if="selectedAcc">Проводки</div>
         <b-table v-if="selectedAcc" :items="operations" :fields="fieldsOperations"></b-table>
+        <modal-create-account v-model="modalShow" @addedAccount="onAddAcc" @modalClosed="modalShow = false"/>
     </div>
 </template>
 
 <script>
+    import ModalCreateAccount from "@/components/modals/modalCreateAccount";
     export default {
         name: "account",
+        components: {ModalCreateAccount},
         data(){
             return{
+                modalShow: false,
                 selected: null,
                 selectedAcc: null,
                 acctPoss:null,
                 operations:null,
                 fields:[
-                    { key: "acctNum", label: "Номер счета" },
-                    { key: "balance", label: "Остаток" },
-                    {key:"actions", label: "Действия"}
+                    { key: "AcctNum", label: "Номер счета" },
+                    { key: "Balance", label: "Остаток" },
+                    { key: "Actions", label: "Действия" }
                 ],
                 fieldsOperations:[
-                    { key: "opDate", label: "Дата операционного дня" },
-                    { key: "acctNumCr", label: "Счет дебета" },
-                    { key: "acctNumDB", label: "Счет кредита" },
-                    { key: "amount", label: "Сумма" },
+                    { key: "OpDate", label: "Дата операционного дня" },
+                    { key: "AcctNumCr", label: "Счет дебета" },
+                    { key: "AcctNumDB", label: "Счет кредита" },
+                    { key: "Amount", label: "Сумма" },
                 ],
                 selectMode: 'single',
             }
         },
         methods:{
-          onRowSelected: function(items){
-              if(items.length <= 0) {
+            onDeleteAcc:async function(val){
+                await this.$store.dispatch('acct/deleteAccount',val)
+                await this.getAccounts(this.selected)
+            },
+            onAddAcc:async function(){
+                await this.getAccounts(this.selected)
+            },
+            onRowSelected: function(items){
+                if(items.length <= 0) {
                   this.selectedAcc = null
                   return
-              }
+                }
               this.selectedAcc = items[0]
-          }
+            },
+            getAccounts: async function (val) {
+                this.acctPoss = await this.$store.dispatch('acct/filterAcctPosByDate', {opDate:val})
+            }
         },
         computed:{
             opDates:function () {
@@ -54,11 +68,11 @@
         },
         watch:{
             selected: async function (val) {
-                this.acctPoss = await this.$store.dispatch('acct/filterAcctPosByDate', {opDate:val})
+                await this.getAccounts(val)
             },
             selectedAcc: async function (selAccount){
                 if(selAccount)
-                this.operations = await this.$store.dispatch('operations/filterByAccountAndDate',{account: selAccount.acctNum, date: this.selected})
+                this.operations = await this.$store.dispatch('operations/filterByAccountAndDate',{account: selAccount.AcctNum, date: this.selected})
             }
         },
         created() {
