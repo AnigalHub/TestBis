@@ -1,7 +1,13 @@
 <template>
     <div class="pages">
         <div class="nameTable">Проводки</div>
-        <b-table sticky-header :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations"></b-table>
+        <b-table sticky-header :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations">
+            <template #cell(Actions)="{item}">
+                <b-button class="mx-2" variant="primary">Редактировать</b-button>
+                <b-button variant="danger">Удалить</b-button>
+            </template>
+        </b-table>
+        <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
         <div class="nameTable" v-if="selected" >Счета проводок</div>
         <b-table  v-if="selected" :items="accountsOperation" :fields="fieldsAccountsOperation"></b-table>
     </div>
@@ -12,17 +18,19 @@
         name: "operations",
         data(){
             return{
+                modalShow: false,
                 selected: null,
                 accountsOperation:null,
                 fieldsOperations:[
-                    { key: "opDate", label: "Дата операционного дня" },
-                    { key: "acctNumCr", label: "Счет дебета" },
-                    { key: "acctNumDB", label: "Счет кредита" },
-                    { key: "amount", label: "Сумма" },
+                    { key: "OpDate", label: "Дата операционного дня" },
+                    { key: "AcctNumCr", label: "Счет дебета" },
+                    { key: "AcctNumDB", label: "Счет кредита" },
+                    { key: "Amount", label: "Сумма" },
+                    { key: "Actions", label: "Действия" }
                 ],
                 fieldsAccountsOperation:[
-                    { key: "acctNum", label: "Номер счета" },
-                    { key: "balance", label: "Остаток" },
+                    { key: "AcctNum", label: "Номер счета" },
+                    { key: "Balance", label: "Остаток" },
                 ],
                 selectMode: 'single',
             }
@@ -39,7 +47,9 @@
         computed:{
             operations:function () {
                 const opDate = this.$store.getters['operations/OpEntry']
-                return opDate.map(x=>{return {opDate: x.OpDate,acctNumCr: x.AcctNumCr,acctNumDB:x.AcctNumDB,amount:x.Amount}})
+                if(!opDate)
+                    return null;
+                return opDate
             },
         },
         watch:{

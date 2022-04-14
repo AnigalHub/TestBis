@@ -77,6 +77,11 @@
         computed:{
             opDates:function () {
                 const opDate = this.$store.getters['opDate/OpDates']
+                if(!opDate)
+                    return null;
+                if(this.selectedDate == null){
+                    this.selectedDate = this.$store.getters['opDate/LastOpDate']
+                }
                 return opDate.map(x=>{return {text: x.OpDate, value: x.OpDate}})
             },
             Accts: function(){
@@ -90,9 +95,6 @@
                 this.operations = await this.$store.dispatch('operations/filterByAccountAndDate',{account: selAccount.AcctNum, date: this.selectedDate})
             }
         },
-        created() {
-            this.selectedDate = this.$store.getters['opDate/LastOpDate']
-        }
     }
 </script>
 
