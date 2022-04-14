@@ -1,18 +1,26 @@
 <template>
     <div class="pages">
         <div class="nameTable">Операционные дни</div>
-        <b-table :items="opDates" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fields"></b-table>
-        <b-button variant="success">Создать</b-button>
+        <b-table sticky-header :items="opDates" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fields">
+            <template #cell(Actions)="{item}">
+                <b-button variant="danger">Удалить</b-button>
+            </template>
+        </b-table>
+        <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
         <div class="nameTable" v-if="selected">Проводки операционного дня</div>
-        <b-table v-if="selected" :items="operations" :fields="fieldsOperations"></b-table>
+        <b-table sticky-header v-if="selected" :items="operations" :fields="fieldsOperations"></b-table>
+        <modal-set-op-date :showModal="modalShow" @modalClosed="onModalClosed"></modal-set-op-date>
     </div>
 </template>
 
 <script>
+    import ModalSetOpDate from "@/components/modals/ModalSetOpDate";
     export default {
         name: "operatingDays",
+        components: {ModalSetOpDate},
         data(){
             return{
+                modalShow: false,
                 selected: null,
                 operations:null,
                 fields:[
@@ -28,6 +36,9 @@
             }
         },
         methods:{
+            onModalClosed:function(){
+                this.modalShow = false
+            },
             onRowSelected: function(items){
                 if(items.length <= 0) {
                     this.selected = null
