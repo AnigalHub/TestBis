@@ -37,9 +37,12 @@ new Vue({
     router,
     store,
     async created(){
-        const resp = await fetch("acct.json")
-        const accts = await resp.json()
+        const respAcct = await fetch("acct.json")
+        const accts = await respAcct.json()
         await store.commit("acct/setAccts", accts)
+        const respOpDate = await fetch("opDate.json")
+        const opDate = await respOpDate.json()
+        await store.commit("opDate/setOpDates", opDate)
     },
     render: h => h(App)
 }).$mount('#app')
