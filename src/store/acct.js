@@ -18,15 +18,6 @@ const mutations ={
     }
 }
 const actions = {
-    filterAcctPosByDate(context,payload){
-        let arrayCopy = []
-        for (let i in context.state.AcctPos) {
-            if (payload.opDate === context.state.AcctPos[i].OpDate) {
-                arrayCopy.push(context.state.AcctPos[i])
-            }
-        }
-        return arrayCopy
-    },
     filterByDateAndAccount(context,payload){
         let arrayCopy = []
         for (let i in context.state.AcctPos){
