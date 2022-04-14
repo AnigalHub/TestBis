@@ -47,7 +47,7 @@
     }
   }
   .pages{
-    padding: 1.5rem 0;
+    padding: 1.5rem 0.5rem;
   }
   @media screen and (max-width: 1200px) {
     select{font-size: 1rem;}
