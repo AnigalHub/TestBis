@@ -4,11 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = () =>({
-OpDate: [
-    {OpDate: "2019-07-12"},
-    {OpDate: "2019-07-15"},
-    {OpDate: "2019-07-16"}
-]
+    OpDate: null,
 })
 const getters = {
     OpDates: (state) => {
@@ -21,10 +17,16 @@ const getters = {
     }
 }
 const mutations ={
-
+    setOpDates: (state, payload) => {
+        state.OpDate = payload.OpDate
+    }
 }
 const actions = {
-
+    setOpDate(context,payload){
+        console.log(payload)
+        const data = JSON.parse(JSON.stringify(payload))
+        context.state.OpDate.push(data)
+    },
 }
 export default {
     namespaced: true,
