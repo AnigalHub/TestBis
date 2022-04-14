@@ -1,7 +1,7 @@
 <template>
     <div class="pages">
         <div class="nameTable">Проводки</div>
-        <b-table :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations"></b-table>
+        <b-table sticky-header :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations"></b-table>
         <div class="nameTable" v-if="selected" >Счета проводок</div>
         <b-table  v-if="selected" :items="accountsOperation" :fields="fieldsAccountsOperation"></b-table>
     </div>
