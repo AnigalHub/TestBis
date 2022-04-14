@@ -34,7 +34,12 @@ const router = new VueRouter(
     });
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    async created(){
+        const resp = await fetch("acct.json")
+        const accts = await resp.json()
+        await store.commit("acct/setAccts", accts)
+    },
+    render: h => h(App)
 }).$mount('#app')
