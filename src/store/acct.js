@@ -4,53 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = () =>({
-AcctPos: [
-    {
-        AcctNum: "10201810000000010019",
-        Balance: 290.0,
-        OpDate: "2019-07-12"
-    },
-    {
-        AcctNum: "47441810000200000020",
-        Balance: -90.0,
-        OpDate: "2019-07-12"
-    },
-    {
-        AcctNum: "47443810000200000023",
-        Balance: -200.0,
-        OpDate: "2019-07-12"
-    },
-    {
-        AcctNum: "10201810000000010019",
-        Balance: 970.0,
-        OpDate: "2019-07-15"
-    },
-    {
-        AcctNum: "47441810000200000020",
-        Balance: -470.0,
-        OpDate: "2019-07-15"
-    },
-    {
-        AcctNum: "47443810000200000023",
-        Balance: -500.0,
-        OpDate: "2019-07-15"
-    },
-    {
-        AcctNum: "10201810000000010019",
-        Balance:1000.0,
-        OpDate: "2019-07-16"
-    },
-    {
-        AcctNum: "47441810000200000020",
-        Balance: -434.0,
-        OpDate: "2019-07-16"
-    },
-    {
-        AcctNum: "47443810000200000023",
-        Balance: -116.0,
-        OpDate: "2019-07-16"
-    }
-]})
+    AcctPos: null
+})
 
 const getters = {
     AcctPos: (state) => {
@@ -58,7 +13,9 @@ const getters = {
     },
 }
 const mutations ={
-
+    setAccts: (state, payload) => {
+        state.AcctPos = payload.AcctPos
+    }
 }
 const actions = {
     filterAcctPosByDate(context,payload){
@@ -79,11 +36,18 @@ const actions = {
         }
         return arrayCopy
     },
-    addAccount(context,payload){
-        context.state.AcctPos.push(payload)
+    setAccount(context,payload){
+        if(payload.old){
+            const res = context.state.AcctPos.filter(x=>x.AcctNum === payload.old.AcctNum && x.OpDate === payload.old.OpDate && x.Balance === payload.old.Balance)
+            if(res.length > 0){
+                res[0].Balance = payload.new.Balance
+            }
+            return
+        }
+        const data = JSON.parse(JSON.stringify(payload.new))
+        context.state.AcctPos.push(data)
     },
     deleteAccount(context,payload){
-        console.log(payload)
         let index = context.state.AcctPos.filter(x => x.AcctNum !== payload.AcctNum)
         context.state.AcctPos = index
     }
