@@ -17,24 +17,5 @@
 </script>
 
 <style scoped lang="scss">
-    nav{
-        width: 100%;
-        min-height: 100vh;
-        padding-top: 1rem;
-        a {
-            text-decoration: none ;
-            font-family: 'Lora', serif;
-            font-size: 1.25rem;
-            padding: .5rem .5rem;
-            color: white;
-            &:hover{
-                padding-left: 1.5rem;
-                color: white;
-                text-decoration: underline;
-            }
-        }
-    }
-    @media screen and (max-width: 992px) {
-        nav {min-height: auto;}
-    }
+
 </style>
