@@ -26,6 +26,10 @@ const actions = {
         const data = JSON.parse(JSON.stringify(payload))
         context.state.OpDate.push(data)
     },
+    deleteOpDate(context,payload){
+        let index = context.state.OpDate.filter(x => x.OpDate !== payload.OpDate)
+        context.state.OpDate = index
+    }
 }
 export default {
     namespaced: true,
