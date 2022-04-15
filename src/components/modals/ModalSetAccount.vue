@@ -2,10 +2,10 @@
     <b-modal v-model="modalShow" hide-footer>
         <b-form @submit.prevent="onSetAcc">
             <b-input-group prepend="Номер счета" class="mb-2">
-                <b-form-input v-model="newAccount.AcctNum" :readonly="isEdit"></b-form-input>
+                <b-form-input v-model="newAccount.AcctNum" :readonly="isEdit" type="number" min="1"></b-form-input>
             </b-input-group>
             <b-input-group prepend="Остаток" class="mb-2">
-                <b-form-input v-model="newAccount.Balance"></b-form-input>
+                <b-form-input v-model="newAccount.Balance" type="number"></b-form-input>
             </b-input-group>
             <b-input-group prepend="Дата" class="mb-2">
                 <b-form-select :options="opDates" v-model="newAccount.OpDate" :disabled="isEdit"></b-form-select>
@@ -40,7 +40,7 @@
             onSetAcc:async function(){
                 try{
                     if (this.newAccount.AcctNum !== '' && this.newAccount.Balance !== '' && this.newAccount.OpDate !== ''){
-                        await this.$store.dispatch('acct/setAccount', {old: this.value, new: this.newAccount})
+                        await this.$store.dispatch('acctPos/setAccount', {old: this.value, new: this.newAccount})
                         this.newAccount.AcctNum = ''
                         this.newAccount.Balance = ''
                         this.newAccount.OpDate = ''
@@ -55,6 +55,8 @@
         computed:{
             opDates:function () {
                 const opDate = this.$store.getters['opDate/OpDates']
+                if(!opDate)
+                    return null;
                 return opDate.map(x=>{return {text: x.OpDate, value: x.OpDate}})
             }
         },
