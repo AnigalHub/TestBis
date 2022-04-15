@@ -13,7 +13,7 @@ const getters = {
     },
 }
 const mutations ={
-    setAccts: (state, payload) => {
+    setAcctPos: (state, payload) => {
         state.AcctPos = payload.AcctPos
     }
 }
@@ -21,7 +21,7 @@ const actions = {
     filterByDateAndAccount(context,payload){
         let arrayCopy = []
         for (let i in context.state.AcctPos){
-            if (payload.opDate === context.state.AcctPos[i].OpDate && (context.state.AcctPos[i].AcctNum === payload.acctNumCr || context.state.AcctPos[i].AcctNum === payload.acctNumDB)){
+            if (payload.OpDate === context.state.AcctPos[i].OpDate && (context.state.AcctPos[i].AcctNum === payload.AcctNumCr || context.state.AcctPos[i].AcctNum === payload.AcctNumDB)){
                 arrayCopy.push(context.state.AcctPos[i])
             }
         }
