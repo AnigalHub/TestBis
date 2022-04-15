@@ -4,8 +4,8 @@
         <div class="nameTable">Счета с остатками на дату</div>
         <b-table sticky-header :items="Accts" :select-mode="selectMode" selectable @row-selected="onRowSelected" :fields="fields">
             <template #cell(Actions)="{item}">
-                <b-button class="mx-2" variant="primary" @click="onEditAcc(item)">Редактировать</b-button>
-                <b-button variant="danger" @click="onDeleteAcc(item)">Удалить</b-button>
+                <b-button class="mx-1" variant="primary" @click="onEditAcc(item)">Редактировать</b-button>
+                <b-button class="mx-1" variant="danger" @click="onDeleteAcc(item)">Удалить</b-button>
             </template>
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
@@ -55,7 +55,7 @@
                 this.accToEdit = item
             },
             onDeleteAcc:async function(val){
-                await this.$store.dispatch('acct/deleteAccount',val)
+                await this.$store.dispatch('acctPos/deleteAccount',val)
             },
             onRowSelected: function(items){
                 if(items.length <= 0) {
@@ -85,7 +85,7 @@
                 return opDate.map(x=>{return {text: x.OpDate, value: x.OpDate}})
             },
             Accts: function(){
-                let res = this.$store.getters["acct/AcctPos"]
+                let res = this.$store.getters["acctPos/AcctPos"]
                 return this.filterAcctPosByDate(res, this.selectedDate)
             }
         },
@@ -98,7 +98,6 @@
     }
 </script>
 
-<style scoped lang="scss">
-
+<style  lang="scss">
 
 </style>
