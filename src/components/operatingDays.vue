@@ -3,7 +3,7 @@
         <div class="nameTable">Операционные дни</div>
         <b-table sticky-header :items="opDates" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fields">
             <template #cell(Actions)="{item}">
-                <b-button variant="danger">Удалить</b-button>
+                <b-button variant="danger" @click="onDeleteOpDate(item)">Удалить</b-button>
             </template>
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
@@ -38,6 +38,9 @@
         methods:{
             onModalClosed:function(){
                 this.modalShow = false
+            },
+            onDeleteOpDate:async function(val){
+                await this.$store.dispatch('opDate/deleteOpDate',val)
             },
             onRowSelected: function(items){
                 if(items.length <= 0) {
