@@ -3,23 +3,28 @@
         <div class="nameTable">Проводки</div>
         <b-table sticky-header :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations">
             <template #cell(Actions)="{item}">
-                <b-button class="mx-2" variant="primary">Редактировать</b-button>
-                <b-button variant="danger">Удалить</b-button>
+                <b-button class="mx-2" variant="primary"@click="onEditOperation(item)" >Редактировать</b-button>
+                <b-button variant="danger" @click="onDeleteOperation(item)">Удалить</b-button>
             </template>
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
         <div class="nameTable" v-if="selected" >Счета проводок</div>
         <b-table  v-if="selected" :items="accountsOperation" :fields="fieldsAccountsOperation"></b-table>
+        <modal-set-operations v-model="operationToEdit" :showModal="modalShow" :is-edit="edit" @modalClosed="onModalClosed"></modal-set-operations>
     </div>
 </template>
 
 <script>
+    import ModalSetOperations from "@/components/modals/ModalSetOperations";
     export default {
         name: "operations",
+        components: {ModalSetOperations},
         data(){
             return{
                 modalShow: false,
                 selected: null,
+                operationToEdit: null,
+                edit: false,
                 accountsOperation:null,
                 fieldsOperations:[
                     { key: "OpDate", label: "Дата операционного дня" },
@@ -36,6 +41,19 @@
             }
         },
         methods:{
+            onModalClosed:function(){
+                this.edit = false
+                this.modalShow = false
+                this.operationToEdit = null
+            },
+            onEditOperation: function(item){
+                this.edit = true
+                this.modalShow = !this.modalShow
+                this.operationToEdit = item
+            },
+            onDeleteOperation:async function(val){
+                await this.$store.dispatch('operations/deleteOperation',val)
+            },
             onRowSelected: function(items){
                 if(items.length <= 0) {
                     this.selected = null
@@ -55,7 +73,7 @@
         watch:{
             selected: async function (val) {
                 if(val)
-                    this.accountsOperation = await this.$store.dispatch('acct/filterByDateAndAccount',val)
+                    this.accountsOperation = await this.$store.dispatch('acctPos/filterByDateAndAccount',val)
             },
         },
     }
