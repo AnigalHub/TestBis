@@ -2,13 +2,22 @@
     <b-modal v-model="modalShow" hide-footer>
         <b-form @submit.prevent="onSetAcc">
             <b-input-group prepend="Номер счета" class="mb-2">
-                <b-form-input v-model="newAccount.AcctNum" :readonly="isEdit" type="number" min="1"></b-form-input>
+                <b-form-input v-model="newAccount.AcctNum" :readonly="isEdit" :state="stateAcctNum" type="number" min="1" aria-describedby="inputFeedbackAcctNum"></b-form-input>
+                <b-form-invalid-feedback id="inputFeedbackAcctNum">
+                    {{errorTextAcctNum}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-input-group prepend="Остаток" class="mb-2">
-                <b-form-input v-model="newAccount.Balance" type="number"></b-form-input>
+                <b-form-input v-model="newAccount.Balance" type="number" :state="stateBalance" aria-describedby="inputFeedbackBalance"></b-form-input>
+                <b-form-invalid-feedback id="inputFeedbackBalance">
+                    {{errorTextBalance}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-input-group prepend="Дата" class="mb-2">
-                <b-form-select :options="opDates" v-model="newAccount.OpDate" :disabled="isEdit"></b-form-select>
+                <b-form-select :options="opDates" v-model="newAccount.OpDate" :state="stateOpDate" :disabled="isEdit" aria-describedby="inputFeedbackOpdate"></b-form-select>
+                <b-form-invalid-feedback id="inputFeedbackOpDate">
+                    {{errorTextOpDate}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-button type="submit" class="mt-2 w-100" variant="success" >Сохранить</b-button>
         </b-form>
@@ -21,6 +30,9 @@
         data(){
             return{
                 modalShow:false,
+                errorTextAcctNum:'',
+                errorTextBalance:'',
+                errorTextOpDate:'',
                 newAccount:{
                     AcctNum:'',
                     Balance:'',
@@ -46,6 +58,14 @@
                         this.newAccount.OpDate = ''
                         this.modalShow = false
                     }
+                    else{
+                        if(!this.newAccount.AcctNum)
+                            this.newAccount.AcctNum = undefined
+                        if(!this.newAccount.Balance)
+                            this.newAccount.Balance = undefined
+                        if(!this.newAccount.OpDate)
+                            this.newAccount.OpDate = undefined
+                    }
                 }
                 catch (e) {
                     console.log('произошла ошибка')
@@ -53,6 +73,33 @@
             },
         },
         computed:{
+            stateOpDate() {
+                if(this.newAccount.OpDate === undefined){
+                    this.errorTextOpDate = 'Не введена дата'
+                    return false
+                }
+                if(!this.newAccount.OpDate)
+                    return undefined
+                return true
+            },
+            stateAcctNum() {
+                if(this.newAccount.AcctNum === undefined){
+                    this.errorTextAcctNum = 'Не введен номер счета'
+                    return false
+                }
+                if(!this.newAccount.AcctNum)
+                    return undefined
+                return true
+            },
+            stateBalance() {
+                if(this.newAccount.Balance === undefined){
+                    this.errorTextBalance = 'Не введен остаток'
+                    return false
+                }
+                if(!this.newAccount.Balance)
+                    return undefined
+                return true
+            },
             opDates:function () {
                 const opDate = this.$store.getters['opDate/OpDates']
                 if(!opDate)
