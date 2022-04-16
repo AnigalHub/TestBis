@@ -9,7 +9,7 @@
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
         <div class="nameTable" v-if="selected" >Счета проводок</div>
-        <b-table  v-if="selected" :items="accountsOperation" :fields="fieldsAccountsOperation"></b-table>
+        <b-table  sticky-header v-if="selected" :items="accountsOperation" :fields="fieldsAccountsOperation"></b-table>
         <modal-set-operations v-model="operationToEdit" :showModal="modalShow" :is-edit="edit" @modalClosed="onModalClosed"></modal-set-operations>
     </div>
 </template>
