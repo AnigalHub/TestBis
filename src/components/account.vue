@@ -5,7 +5,7 @@
         <b-table sticky-header :items="Accts" :select-mode="selectMode" selectable @row-selected="onRowSelected" :fields="fields">
             <template #cell(Actions)="{item}">
                 <b-button class="mx-1" variant="primary" @click="onEditAcc(item)">Редактировать</b-button>
-                <b-button class="mx-1" variant="danger" @click="onDeleteAcc(item)">Удалить</b-button>
+                <b-button class="mx-1" variant="danger" @click="onDeleteAcc(item)" >Удалить</b-button>
             </template>
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>

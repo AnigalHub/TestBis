@@ -3,8 +3,8 @@
         <div class="nameTable">Проводки</div>
         <b-table sticky-header :items="operations" :select-mode="selectMode" selectable  @row-selected="onRowSelected" :fields="fieldsOperations">
             <template #cell(Actions)="{item}">
-                <b-button class="mx-2" variant="primary"@click="onEditOperation(item)" >Редактировать</b-button>
-                <b-button variant="danger" @click="onDeleteOperation(item)">Удалить</b-button>
+                <b-button class="mx-1" variant="primary" @click="onEditOperation(item)" >Редактировать</b-button>
+                <b-button class="mx-1" variant="danger" @click="onDeleteOperation(item)">Удалить</b-button>
             </template>
         </b-table>
         <b-button variant="success" @click="modalShow = !modalShow">Создать</b-button>
