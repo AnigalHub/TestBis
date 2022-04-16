@@ -30,8 +30,8 @@
   }
   nav{
     width: 100%;
-    min-height: 97.4vh;
-    padding-top: 1rem;
+    height: 100vh ;
+    //padding-top: 1rem;
     a {
       text-decoration: none ;
       font-family: 'Lora', serif;
@@ -72,10 +72,13 @@
     table,button{font-size: .8rem !important;}
   }
   @media screen and (max-width: 992px) {
-    nav {min-height: auto;}
+    nav {height: auto !important;}
     .row{
       flex-direction: column;
       .col-2,.col{ max-width: 100%;}
+      .col-2{
+        padding: 0 !important;
+      }
     }
   }
 </style>
