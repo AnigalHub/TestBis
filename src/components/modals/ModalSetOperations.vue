@@ -20,7 +20,7 @@
             <b-input-group prepend="Сумма" class="mb-2">
                 <b-form-input v-model="newOperations.Amount" type="number" min="1"></b-form-input>
             </b-input-group>
-            <b-button type="submit" class="mt-2" variant="success" >Сохранить</b-button>
+            <b-button type="submit" class="mt-2 w-100" variant="success" >Сохранить</b-button>
         </b-form>
     </b-modal>
 </template>

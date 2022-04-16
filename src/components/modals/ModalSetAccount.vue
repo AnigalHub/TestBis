@@ -10,7 +10,7 @@
             <b-input-group prepend="Дата" class="mb-2">
                 <b-form-select :options="opDates" v-model="newAccount.OpDate" :disabled="isEdit"></b-form-select>
             </b-input-group>
-            <b-button type="submit" class="mt-2" variant="success" >Сохранить</b-button>
+            <b-button type="submit" class="mt-2 w-100" variant="success" >Сохранить</b-button>
         </b-form>
     </b-modal>
 </template>
