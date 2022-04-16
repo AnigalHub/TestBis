@@ -2,14 +2,16 @@
     <b-modal v-model="modalShow" hide-footer>
         <b-form @submit.prevent="onSetOpDate">
             <b-input-group prepend="Оперционный день" class="mb-2">
-                <b-form-input id="example-input" v-model="OpDate" type="text" placeholder="YYYY-MM-DD" autocomplete="off"
+                <b-form-input  aria-describedby="inputFeedback"  :state="nameState" id="example-input" v-model="OpDate" type="text" placeholder="YYYY-MM-DD" autocomplete="off"
                 ></b-form-input>
                 <b-input-group-append>
                     <b-form-datepicker v-model="OpDate" button-only right locale="en-US" aria-controls="example-input" @context="onContext"></b-form-datepicker>
                 </b-input-group-append>
+                <b-form-invalid-feedback id="inputFeedback">
+                    {{errorText}}
+                </b-form-invalid-feedback>
             </b-input-group>
-            <div> {{errorText}}</div>
-            <b-button type="submit" class="mt-2" variant="success" >Сохранить</b-button>
+            <b-button type="submit" class="mt-2 w-100" variant="success" >Сохранить</b-button>
         </b-form>
     </b-modal>
 </template>
@@ -28,7 +30,17 @@
         },
         props:{
             showModal:Boolean,
-            value: String
+        },
+        computed: {
+            nameState() {
+                if(!this.OpDate)
+                    return undefined
+                if(this.formatted === 'No date selected'){
+                    this.errorText = 'Ошибка ввода операционного дня'
+                    return false
+                }
+                return true
+            }
         },
         methods:{
             onContext(ctx) {
@@ -36,13 +48,9 @@
                 this.selected = ctx.selectedYMD
             },
             onSetOpDate: async function(){
-                console.log()
                 try{
                     if (this.OpDate !== ''){
-                      //  if( this.formatted === 'No date selected'){
-                           // this.errorText = 'Неправильно вбит операционный день'
-                       // }
-                        await this.$store.dispatch('opDate/setOpDate',this.opDate)
+                        await this.$store.dispatch('opDate/setOpDate',{OpDate: this.OpDate})
                         this.OpDate=''
                         this.modalShow = false
                     }
@@ -55,14 +63,6 @@
         watch:{
             showModal:function (val) {
                 this.modalShow = val
-            },
-            value: function (val) {
-                if(val){
-                    const copy = JSON.parse(JSON.stringify(val))
-                    this.OpDate = copy
-                } else{
-                    this.OpDate = ''
-                }
             },
             modalShow:function (val) {
                 if(!val)
