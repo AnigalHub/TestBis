@@ -20,7 +20,6 @@ const mutations ={
 const actions = {
     filterByAccountAndDate(context,payload){
         let arrayCopy = []
-        console.log(payload)
         for(let i in context.state.OpEntry){
             if((payload.account === context.state.OpEntry[i].AcctNumCr || payload.account === context.state.OpEntry[i].AcctNumDB)
                 && (payload.date === context.state.OpEntry[i].OpDate)){
@@ -50,7 +49,6 @@ const actions = {
 
     },
     deleteOperation(context,payload){
-        console.log(context.state.OpEntry.length)
         let index = context.state.OpEntry.filter(x => x.AcctNumCr === payload.AcctNumCr &&
             x.AcctNumDB === payload.AcctNumDB && x.Amount === payload.Amount && x.OpDate === payload.OpDate)
         context.state.OpEntry.splice(context.state.OpEntry.indexOf(index[0]),1)
