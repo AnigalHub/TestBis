@@ -72,6 +72,7 @@
         },
         watch:{
             selected: async function (val) {
+                console .log("выбран", val)
                 if(val)
                     this.accountsOperation = await this.$store.dispatch('acctPos/filterByDateAndAccount',val)
             },
