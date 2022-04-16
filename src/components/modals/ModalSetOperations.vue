@@ -2,23 +2,28 @@
     <b-modal v-model="modalShow" hide-footer>
         <b-form @submit.prevent="onSetOperations">
             <b-input-group prepend="Дата операционного дня" class="mb-2">
-                <b-form-input  aria-describedby="inputFeedback" :disabled="isEdit" :state="nameState" id="example-input" v-model="newOperations.OpDate" type="text" placeholder="YYYY-MM-DD" autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                    <b-form-datepicker v-model="newOperations.OpDate" :disabled="isEdit" button-only right locale="en-US" aria-controls="example-input" @context="onContext"></b-form-datepicker>
-                </b-input-group-append>
-                <b-form-invalid-feedback id="inputFeedback" >
-                    {{errorText}}
+                <b-form-select :options="opDates" v-model="newOperations.OpDate" :state="stateOpDate" :disabled="isEdit" aria-describedby="inputFeedbackOpdate"></b-form-select>
+                <b-form-invalid-feedback id="inputFeedbackOpdate">
+                    {{errorTextOpDate}}
                 </b-form-invalid-feedback>
             </b-input-group>
             <b-input-group prepend="Счет дебета" class="mb-2">
-                <b-form-select :options="AcctsNum" v-model="newOperations.AcctNumDB" :disabled="isEdit"></b-form-select>
+                <b-form-select :options="AcctsNum" v-model="newOperations.AcctNumDB" :state="stateAcctNumDB" :disabled="isEdit" aria-describedby="inputFeedbackAcctNumDB"></b-form-select>
+                <b-form-invalid-feedback id="inputFeedbackAcctNumDB">
+                    {{errorTextAcctNumDB}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-input-group prepend="Счет кредита" class="mb-2">
-                <b-form-select :options="AcctsNum" v-model="newOperations.AcctNumCr" :disabled="isEdit"></b-form-select>
+                <b-form-select :options="AcctsNum" :state="stateAcctNumCr" v-model="newOperations.AcctNumCr" :disabled="isEdit" aria-describedby="inputFeedbackAcctNumCr"></b-form-select>
+                <b-form-invalid-feedback id="inputFeedbackAcctNumCr">
+                    {{errorTextAcctNumCr}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-input-group prepend="Сумма" class="mb-2">
-                <b-form-input v-model="newOperations.Amount" type="number" min="1"></b-form-input>
+                <b-form-input v-model="newOperations.Amount" :state="stateAmount" type="number" min="1" aria-describedby="inputFeedbackAmount"></b-form-input>
+                <b-form-invalid-feedback id="inputFeedbackAmount">
+                    {{errorTextAmount}}
+                </b-form-invalid-feedback>
             </b-input-group>
             <b-button type="submit" class="mt-2 w-100" variant="success" >Сохранить</b-button>
         </b-form>
@@ -31,9 +36,10 @@
         data(){
             return{
                 modalShow:false,
-                errorText:'',
-                formatted: '',
-                selected: '',
+                errorTextAcctNumCr:'',
+                errorTextAcctNumDB:'',
+                errorTextAmount:'',
+                errorTextOpDate:'',
                 newOperations:{
                     AcctNumCr:'',
                     AcctNumDB:'',
@@ -51,14 +57,40 @@
             },
         },
         computed: {
-            nameState() {
-                if(!this.newOperations.OpDate)
-                    return undefined
-                if(this.formatted === 'No date selected'){
-                    this.errorText = 'Ошибка ввода операционного дня'
+            stateOpDate() {
+                if(this.newOperations.OpDate === undefined){
+                    this.errorTextOpDate = 'Не введена дата операционного дня'
                     return false
                 }
-                console.log(this.newOperations)
+                if(!this.newOperations.OpDate)
+                    return undefined
+                return true
+            },
+            stateAcctNumDB() {
+                if(this.newOperations.AcctNumDB === undefined){
+                    this.errorTextAcctNumDB = 'Не введен счет дебета'
+                    return false
+                }
+                if(!this.newOperations.AcctNumDB)
+                    return undefined
+                return true
+            },
+            stateAcctNumCr() {
+                if(this.newOperations.AcctNumCr === undefined){
+                    this.errorTextAcctNumCr = 'Не введен счет кредита'
+                    return false
+                }
+                if(!this.newOperations.AcctNumCr)
+                    return undefined
+                return true
+            },
+            stateAmount() {
+                if(this.newOperations.Amount === undefined){
+                    this.errorTextAmount = 'Не введена сумма'
+                    return false
+                }
+                if(!this.newOperations.Amount)
+                    return undefined
                 return true
             },
             AcctsNum(){
@@ -66,6 +98,12 @@
                 if(!accts)
                     return null;
                 return accts.map(x=>{return {text: x.AcctNum, value: x.AcctNum}})
+            },
+            opDates:function () {
+                const opDate = this.$store.getters['opDate/OpDates']
+                if(!opDate)
+                    return null;
+                return opDate.map(x=>{return {text: x.OpDate, value: x.OpDate}})
             }
         },
         methods:{
@@ -82,6 +120,16 @@
                         this.newOperations.AcctNumDB =''
                         this.newOperations.Amount =''
                         this.modalShow = false
+                    }
+                    else{
+                        if(!this.newOperations.OpDate)
+                            this.newOperations.OpDate = undefined
+                        if(!this.newOperations.AcctNumDB)
+                            this.newOperations.AcctNumDB = undefined
+                        if(!this.newOperations.AcctNumCr)
+                            this.newOperations.AcctNumCr = undefined
+                        if(!this.newOperations.Amount)
+                            this.newOperations.Amount = undefined
                     }
                 }
                 catch (e) {
