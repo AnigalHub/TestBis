@@ -1,6 +1,6 @@
 export default [
     {
-        path:'/',
+        path:'/testbis/',
         name: 'Account',
         component:() => import('./components/account'),
     },
