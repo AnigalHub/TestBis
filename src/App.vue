@@ -15,11 +15,6 @@
   import NavbarMenu from "@/components/navbarMenu";
   export default {
     components: {NavbarMenu},
-    data(){
-      return {
-
-      }
-    },
   }
 </script>
 
@@ -31,7 +26,6 @@
   nav{
     width: 100%;
     height: 100vh ;
-    //padding-top: 1rem;
     a {
       text-decoration: none ;
       font-family: 'Lora', serif;
@@ -61,12 +55,8 @@
     font-size: 1rem;
     th{border-bottom: 1px solid black !important;}
   }
-  .modal-body{
-    padding: 0 1rem 1rem !important;
-  }
-  .pages{
-    padding: 1rem 0.5rem 0;
-  }
+  .modal-body{padding: 0 1rem 1rem !important;}
+  .pages{padding: 1rem 0.5rem 0;}
   @media screen and (max-width: 1200px) {
     nav a,select,.nameTable{font-size: 1rem;}
     table,button{font-size: .8rem !important;}
@@ -76,9 +66,7 @@
     .row{
       flex-direction: column;
       .col-2,.col{ max-width: 100%;}
-      .col-2{
-        padding: 0 !important;
-      }
+      .col-2{padding: 0 !important;}
     }
   }
 </style>
